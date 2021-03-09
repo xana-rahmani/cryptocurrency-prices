@@ -1,5 +1,6 @@
 package com.example.cryptho;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -30,8 +31,18 @@ public class MainModelView {
 
     public ArrayList<String> cities = new ArrayList<>();
 
-//    private int startToGetCoins = 1;  // (start is 1-based index in coin market cap API)
+    private int numberOfCoins = 0;
 
+    // Thread Pool
+    int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+    int KEEP_ALIVE_TIME = 2;
+    TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
+    BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
+    ExecutorService networkExecutorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
+            NUMBER_OF_CORES*2,
+            KEEP_ALIVE_TIME,
+            KEEP_ALIVE_TIME_UNIT,
+            taskQueue);
 
 
     static public MainModelView get() {
@@ -41,23 +52,27 @@ public class MainModelView {
         return me;
     }
 
-    public void showMoreCoin(Handler handler, int start) {
+    public void showMoreCoin(Handler handler) {
         // Coin Market Cap Api Info
-        final String coinMarketCapUrlFormat = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=%d&limit=10&convert=USD";
-        final String coinMarketCapApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
-        final String coinMarketCapHeaderFormat = "X-CMC_PRO_API_KEY";
+        final String UrlFormat = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=%d&limit=10&convert=USD";
+        final String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
+        final String HeaderFormat = "X-CMC_PRO_API_KEY";
 
+        String url = String.format(UrlFormat, numberOfCoins + 1);
 
-        String url = String.format(coinMarketCapUrlFormat, start);
-        Response response = httpRequest.call(url, coinMarketCapApiToken, coinMarketCapHeaderFormat);
+        networkExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                Response response = httpRequest.call(url, ApiToken, HeaderFormat);
+                if (response == null) return;
 
-        if (response == null) return;
-
-        try {
-            Log.v("ans: ", response.body().string());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                try {
+                    Log.v("ans: ", response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
 
