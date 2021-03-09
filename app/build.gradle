@@ -34,7 +34,7 @@ dependencies {
 
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp")
-    compile 'org.decimal4j:decimal4j:1.0.3'
+    implementation 'org.decimal4j:decimal4j:1.0.3'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
