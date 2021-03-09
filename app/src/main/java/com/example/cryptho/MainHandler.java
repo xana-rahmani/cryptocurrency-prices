@@ -31,6 +31,6 @@ public class MainHandler extends Handler {
     private void logCities() {
         MainActivity main = mainActivityWeakReference.get();
         MainModelView modelView = MainModelView.get();
-        main.tv.setText(modelView.cities.toString());
+        // main.tv.setText(modelView.cities.toString());
     }
 }

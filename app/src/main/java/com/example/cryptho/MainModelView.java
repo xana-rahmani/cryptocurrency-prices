@@ -18,10 +18,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+
+import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 public class MainModelView {
@@ -29,7 +27,8 @@ public class MainModelView {
 
     public ArrayList<String> cities = new ArrayList<>();
 
-    private int numberOfCoins = 0;
+    private int NumberOfCoins = 0;
+    private String CoinMarketCapUrl = null;
 
     // Thread Pool
     int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
@@ -51,19 +50,17 @@ public class MainModelView {
     }
 
     public void showMoreCoin(Handler handler) {
-        // Coin Market Cap Api Info
-        final String UrlFormat = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=%d&limit=10&convert=USD";
-        final String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
-        final String HeaderFormat = "X-CMC_PRO_API_KEY";
+        String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
+        String ApiHeaderFormat = "X-CMC_PRO_API_KEY";
 
-        String url = String.format(UrlFormat, numberOfCoins + 1);
+        if (CoinMarketCapUrl == null) CreateCoinMarketCapUrlBuilder();
 
         networkExecutorService.execute(new Runnable() {
             @Override
             public void run() {
 
                 HttpRequest httpRequest = new HttpRequest();
-                Response response = httpRequest.call(url, ApiToken, HeaderFormat);
+                Response response = httpRequest.call(CoinMarketCapUrl, ApiToken, ApiHeaderFormat);
 
                 if (response == null) return;
 
@@ -74,5 +71,13 @@ public class MainModelView {
                 }
             }
         });
+    }
+
+    private void CreateCoinMarketCapUrlBuilder(){
+        String UrlFormat = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(UrlFormat).newBuilder();
+        urlBuilder.addQueryParameter("limit", "10");
+        urlBuilder.addQueryParameter("convert", "USD");
+        CoinMarketCapUrl = urlBuilder.build().toString();
     }
 }
