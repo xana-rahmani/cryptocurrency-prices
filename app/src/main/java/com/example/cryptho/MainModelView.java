@@ -25,8 +25,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MainModelView {
-
-    final private HttpRequest httpRequest = new HttpRequest();
     static private MainModelView me;
 
     public ArrayList<String> cities = new ArrayList<>();
@@ -63,7 +61,10 @@ public class MainModelView {
         networkExecutorService.execute(new Runnable() {
             @Override
             public void run() {
+
+                HttpRequest httpRequest = new HttpRequest();
                 Response response = httpRequest.call(url, ApiToken, HeaderFormat);
+
                 if (response == null) return;
 
                 try {
@@ -75,5 +76,3 @@ public class MainModelView {
         });
     }
 }
-
-
