@@ -11,7 +11,7 @@ public class DataHolder {
     }
 
     public int CoinsDataSize(){
-        synchronized (this.CoinsData){
+        synchronized (this){
             return this.CoinsData.size();
         }
     }
