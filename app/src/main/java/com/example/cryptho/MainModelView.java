@@ -1,8 +1,10 @@
 package com.example.cryptho;
 
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
+import com.example.cryptho.adaptor.ListOfCoinsAdapter;
 import com.example.cryptho.utils.DataHolder;
 import com.example.cryptho.utils.DoubleRounder;
 
@@ -75,6 +77,12 @@ public class MainModelView {
 
                     // step3.   Parse json data and Save in dataHolder ArrayList.
                     SaveNewCoinsData(jsonObject);
+
+                    // step4.   Send Message to handler for update view.
+                    Message msg = Message.obtain();
+                    msg.what = UPDATE_COINS_DATA_LIST;
+                    handler.dispatchMessage(msg);
+
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -90,6 +98,7 @@ public class MainModelView {
         CoinMarketCapUrl = urlBuilder.build().toString();
     }
 
+    // Parse coins data json and Save in dataHolder ArrayList.
     private void SaveNewCoinsData(JSONObject jsonCoinsData){
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");

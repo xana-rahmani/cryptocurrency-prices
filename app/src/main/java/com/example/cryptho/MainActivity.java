@@ -1,6 +1,7 @@
 package com.example.cryptho;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -10,6 +11,9 @@ import android.os.Bundle;
 import android.os.HandlerThread;
 import android.view.View;
 
+import com.example.cryptho.adaptor.ListOfCoinsAdapter;
+import com.example.cryptho.utils.DataHolder;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,9 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     private HandlerThread handlerThread = new HandlerThread("HandlerThread");
     private MainHandler mainHandler;
+    private DataHolder dataHolder = DataHolder.getInstance();
+
 
     // RecyclerView: list of coins data
-    public RecyclerView recyclerListOfCoins;
+    private RecyclerView recyclerListOfCoins;
+    public ListOfCoinsAdapter listOfCoinsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         this.mmv = MainModelView.getInstance();
         recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
+        listOfCoinsAdapter = new ListOfCoinsAdapter(this, dataHolder.CoinsData);
+        recyclerListOfCoins.setAdapter(listOfCoinsAdapter);
+        recyclerListOfCoins.setLayoutManager(new LinearLayoutManager(this));
 
         if (isConnected()){
             mmv.showMoreCoin(mainHandler);

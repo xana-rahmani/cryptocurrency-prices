@@ -34,6 +34,6 @@ public class MainHandler extends Handler {
     private void updateCoinsDataRecyclerView() {
         MainActivity main = mainActivityWeakReference.get();
         MainModelView modelView = MainModelView.getInstance();
-//        main.recyclerListOfCoins
+        main.listOfCoinsAdapter.notifyDataSetChanged();
     }
 }
