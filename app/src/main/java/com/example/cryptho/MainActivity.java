@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         handlerThread.start();
         mainHandler = new MainHandler(this, handlerThread.getLooper());
 
-        this.mmv = MainModelView.get();
+        this.mmv = MainModelView.getInstance();
     }
 
     @Override

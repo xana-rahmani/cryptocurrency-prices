@@ -24,8 +24,6 @@ import okhttp3.Response;
 public class MainModelView {
     static private MainModelView me;
 
-    public ArrayList<String> cities = new ArrayList<>();
-
     private int NumberOfCoins = 0;
     private String CoinMarketCapUrl = null;
 
@@ -41,7 +39,7 @@ public class MainModelView {
             taskQueue);
 
 
-    static public MainModelView get() {
+    static public MainModelView getInstance() {
         if (me == null) {
             me = new MainModelView();
         }
