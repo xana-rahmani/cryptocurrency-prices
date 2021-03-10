@@ -23,10 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private HandlerThread handlerThread = new HandlerThread("HandlerThread");
     private MainHandler mainHandler;
+
     private DataHolder dataHolder = DataHolder.getInstance();
-
-
-    // RecyclerView: list of coins data
     public ListOfCoinsAdapter listOfCoinsAdapter;
 
     @Override
