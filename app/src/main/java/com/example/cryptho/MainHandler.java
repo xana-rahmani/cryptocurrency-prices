@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 
 public class MainHandler extends Handler {
     private static final String TAG = "Main Handler";
-    private WeakReference<MainActivity> mainActivityWeakReference;
+    private final WeakReference<MainActivity> mainActivityWeakReference;
 
     // Messages
     int UPDATE_COINS_LIST = 1;

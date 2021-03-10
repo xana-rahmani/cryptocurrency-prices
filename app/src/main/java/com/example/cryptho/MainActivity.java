@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         this.mmv = MainModelView.getInstance();
 
         if (isConnected()){
-            mmv.showMoreCoin(mainHandler, 1);
+            mmv.showMoreCoin(mainHandler);
         }
         // TODO : go and download from cash or show error message if first time
     }
@@ -47,6 +47,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showMoreCoin(View view) {
-        mmv.showMoreCoin(mainHandler, null);
+        mmv.showMoreCoin(mainHandler);
     }
 }

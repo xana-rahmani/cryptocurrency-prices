@@ -1,7 +1,7 @@
 package com.example.cryptho;
 
 import android.os.Handler;
-import com.example.cryptho.Utils.DataHolder;
+import com.example.cryptho.utils.DataHolder;
 
 import org.decimal4j.util.DoubleRounder;
 import org.json.JSONArray;
@@ -50,11 +50,9 @@ public class MainModelView {
         return me;
     }
 
-    public void showMoreCoin(Handler handler, Integer startIndex) {
+    public void showMoreCoin(Handler handler) {
         String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
         String ApiHeaderFormat = "X-CMC_PRO_API_KEY";
-
-        if (startIndex != null) NumberOfCoins = startIndex;
 
         if (CoinMarketCapUrl == null) CreateCoinMarketCapUrl();
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
