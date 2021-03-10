@@ -1,7 +1,7 @@
 package com.example.cryptho;
 
 import android.os.Handler;
-import android.util.Log;
+import com.example.cryptho.Utils.DataHolder;
 
 import org.decimal4j.util.DoubleRounder;
 import org.json.JSONArray;
@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +22,7 @@ import okhttp3.Response;
 
 public class MainModelView {
     static private MainModelView me;
+    final private DataHolder dataHolder = DataHolder.getInstance();
 
     //Main Handler Messages
     int UPDATE_COINS_LIST = 1;
@@ -36,7 +36,7 @@ public class MainModelView {
     int KEEP_ALIVE_TIME = 2;
     TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
     BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
-    ExecutorService networkExecutorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
+    ExecutorService showMoreCoinExecutorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
             NUMBER_OF_CORES*2,
             KEEP_ALIVE_TIME,
             KEEP_ALIVE_TIME_UNIT,
@@ -57,23 +57,23 @@ public class MainModelView {
         if (startIndex != null) NumberOfCoins = startIndex;
 
         if (CoinMarketCapUrl == null) CreateCoinMarketCapUrl();
-        // start is offset (1-based index) of the paginated list of items to return.
-        int start = NumberOfCoins + 1;
+        int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
 
-        networkExecutorService.execute(new Runnable() {
+        showMoreCoinExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-
-                HttpRequest httpRequest = new HttpRequest();
-                Response response = httpRequest.call(url, ApiToken, ApiHeaderFormat);
-
-                if (response == null) return;
-
                 try {
-                    // convert string response to json object.
+                    // step1. Get 10 Coins Data.
+                    HttpRequest httpRequest = new HttpRequest();
+                    Response response = httpRequest.call(url, ApiToken, ApiHeaderFormat);
+                    if (response == null) return;
+
+                    // step2. Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
-                    AddNewCoinsData(jsonObject);
+
+                    // step3. Parse json data and Save in dataHolder ArrayList.
+                    SaveNewCoinsData(jsonObject);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -89,7 +89,7 @@ public class MainModelView {
         CoinMarketCapUrl = urlBuilder.build().toString();
     }
 
-    private void AddNewCoinsData(JSONObject jsonCoinsData){
+    private void SaveNewCoinsData(JSONObject jsonCoinsData){
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
 
@@ -105,8 +105,8 @@ public class MainModelView {
                 double change_24h = DoubleRound(coinUsdValue.getDouble("percent_change_24h"));
                 double change_7d = DoubleRound(coinUsdValue.getDouble("percent_change_7d"));
 
-                Log.d("#Debug", coin_name + " " + coin_symbol);  //TODO: for test
-
+                dataHolder.addOrUpdateCoinData(coin_name, coin_symbol, coin_price,
+                        change_1h, change_24h, change_7d);
             }
 
             //TODO: After add new coins >> update NumberOfCoins
