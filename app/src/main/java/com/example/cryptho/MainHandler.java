@@ -35,6 +35,6 @@ public class MainHandler extends Handler {
 
     private void updateCoinsDataRecyclerView() {
         MainActivity main = mainActivityWeakReference.get();
-        // main.listOfCoinsAdapter.notifyDataSetChanged();  // D'ont Work
+         main.listOfCoinsAdapter.notifyDataSetChanged();  // D'ont Work
     }
 }
