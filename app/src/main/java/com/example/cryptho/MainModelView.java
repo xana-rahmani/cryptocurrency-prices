@@ -112,7 +112,7 @@ public class MainModelView {
             }
 
             //After save new coins >> update NumberOfCoins
-            NumberOfCoins += 10;
+            NumberOfCoins = dataHolder.CoinsDataSize();
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -10,6 +10,12 @@ public class DataHolder {
         return dataHolder;
     }
 
+    public int CoinsDataSize(){
+        synchronized (this.CoinsData){
+            return this.CoinsData.size();
+        }
+    }
+
     public void addOrUpdateCoinData(String name, String symbol,
                                     double price,
                                     double percent_change_1h,
