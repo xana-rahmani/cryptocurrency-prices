@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         if (isConnected()){
             mmv.showMoreCoin(mainHandler, 1);
         }
+        // TODO : go and download from cash or show error message if first time
     }
 
     private boolean isConnected() {
