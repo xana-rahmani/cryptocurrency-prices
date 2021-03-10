@@ -28,7 +28,7 @@ public class MainModelView {
     final private DoubleRounder DR = new DoubleRounder();
 
     //Main Handler Messages
-    int UPDATE_COINS_LIST = 1;
+    int UPDATE_COINS_DATA_LIST = 1;
 
 
     private int NumberOfCoins = 0;
@@ -39,7 +39,7 @@ public class MainModelView {
     int KEEP_ALIVE_TIME = 2;
     TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
     BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
-    ExecutorService showMoreCoinExecutorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
+    ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
             NUMBER_OF_CORES*2,
             KEEP_ALIVE_TIME,
             KEEP_ALIVE_TIME_UNIT,
@@ -61,7 +61,7 @@ public class MainModelView {
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
 
-        showMoreCoinExecutorService.execute(new Runnable() {
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 try {

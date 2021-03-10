@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
     private HandlerThread handlerThread = new HandlerThread("HandlerThread");
     private MainHandler mainHandler;
 
+    // RecyclerView: list of coins data
+    public RecyclerView recyclerListOfCoins;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mainHandler = new MainHandler(this, handlerThread.getLooper());
 
         this.mmv = MainModelView.getInstance();
+        recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
 
         if (isConnected()){
             mmv.showMoreCoin(mainHandler);

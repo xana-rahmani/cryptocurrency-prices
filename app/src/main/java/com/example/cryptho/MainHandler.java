@@ -3,7 +3,6 @@ package com.example.cryptho;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -14,7 +13,7 @@ public class MainHandler extends Handler {
     private final WeakReference<MainActivity> mainActivityWeakReference;
 
     // Messages
-    int UPDATE_COINS_LIST = 1;
+    final private int UPDATE_COINS_DATA_LIST = 1;
 
     public MainHandler(MainActivity mainActivity, Looper looper) {
         super(looper);
@@ -25,15 +24,16 @@ public class MainHandler extends Handler {
     @Override
     public void handleMessage(@NonNull Message msg) {
         switch (msg.what) {
-            case 1:
-                logCities();
+            case UPDATE_COINS_DATA_LIST:
+                updateCoinsDataRecyclerView();
                 break;
         }
     }
 
-    private void logCities() {
+
+    private void updateCoinsDataRecyclerView() {
         MainActivity main = mainActivityWeakReference.get();
         MainModelView modelView = MainModelView.getInstance();
-        // main.tv.setText(modelView.cities.toString());
+//        main.recyclerListOfCoins
     }
 }

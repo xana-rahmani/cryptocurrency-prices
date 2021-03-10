@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Cryptho</string>
     <string name="more_coin">More Coin</string>
+    <string name="coin_info">Coin Info</string>
+    <string name="change_1h">Change 1h</string>
+    <string name="_1h">1h:</string>
 </resources>
