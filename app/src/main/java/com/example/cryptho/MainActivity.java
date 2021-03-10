@@ -2,6 +2,9 @@ package com.example.cryptho;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.view.View;
@@ -24,17 +27,25 @@ public class MainActivity extends AppCompatActivity {
         mainHandler = new MainHandler(this, handlerThread.getLooper());
 
         this.mmv = MainModelView.getInstance();
+
+        if (isConnected()){
+            mmv.showMoreCoin(mainHandler, 1);
+        }
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         handlerThread.quit();
-
     }
 
     public void showMoreCoin(View view) {
-        mmv.showMoreCoin(mainHandler);
+        mmv.showMoreCoin(mainHandler, null);
     }
-
 }

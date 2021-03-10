@@ -24,6 +24,10 @@ import okhttp3.Response;
 public class MainModelView {
     static private MainModelView me;
 
+    //Main Handler Messages
+    int UPDATE_COINS_LIST = 1;
+
+
     private int NumberOfCoins = 0;
     private String CoinMarketCapUrl = null;
 
@@ -46,9 +50,11 @@ public class MainModelView {
         return me;
     }
 
-    public void showMoreCoin(Handler handler) {
+    public void showMoreCoin(Handler handler, Integer startIndex) {
         String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
         String ApiHeaderFormat = "X-CMC_PRO_API_KEY";
+
+        if (startIndex != null) NumberOfCoins = startIndex;
 
         if (CoinMarketCapUrl == null) CreateCoinMarketCapUrl();
         // start is offset (1-based index) of the paginated list of items to return.

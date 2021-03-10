@@ -13,6 +13,9 @@ public class MainHandler extends Handler {
     private static final String TAG = "Main Handler";
     private WeakReference<MainActivity> mainActivityWeakReference;
 
+    // Messages
+    int UPDATE_COINS_LIST = 1;
+
     public MainHandler(MainActivity mainActivity, Looper looper) {
         super(looper);
         mainActivityWeakReference = new WeakReference<>(mainActivity);
