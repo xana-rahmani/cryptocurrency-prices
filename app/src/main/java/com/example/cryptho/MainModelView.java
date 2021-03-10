@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.cryptho.utils.DataHolder;
+import com.example.cryptho.utils.DoubleRounder;
 
-import org.decimal4j.util.DoubleRounder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +25,7 @@ import okhttp3.Response;
 public class MainModelView {
     static private MainModelView me;
     final private DataHolder dataHolder = DataHolder.getInstance();
+    final private DoubleRounder DR = new DoubleRounder();
 
     //Main Handler Messages
     int UPDATE_COINS_LIST = 1;
@@ -100,26 +101,21 @@ public class MainModelView {
                 String coin_symbol = coinData.getString("symbol");
 
                 JSONObject coinUsdValue = coinData.getJSONObject("quote").getJSONObject("USD");
-                double coin_price = DoubleRound(coinUsdValue.getDouble("price"), 3);
-                double change_1h = DoubleRound(coinUsdValue.getDouble("percent_change_1h"), null);
-                double change_24h = DoubleRound(coinUsdValue.getDouble("percent_change_24h"), null);
-                double change_7d = DoubleRound(coinUsdValue.getDouble("percent_change_7d"), null);
+                double coin_price = DR.Round(coinUsdValue.getDouble("price"), 3);
+                double change_1h = DR.Round(coinUsdValue.getDouble("percent_change_1h"), null);
+                double change_24h = DR.Round(coinUsdValue.getDouble("percent_change_24h"), null);
+                double change_7d = DR.Round(coinUsdValue.getDouble("percent_change_7d"), null);
 
                 Log.d("COIN",coin_name + ": " + coin_price );
                 dataHolder.addOrUpdateCoinData(coin_name, coin_symbol, coin_price,
                         change_1h, change_24h, change_7d);
             }
 
-            //TODO: After add new coins >> update NumberOfCoins
+            //After save new coins >> update NumberOfCoins
             NumberOfCoins += 10;
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private double DoubleRound(double d, Integer p) {
-        if (p == null) return DoubleRounder.round(d, 2);
-        return DoubleRounder.round(d, p);
     }
 }
