@@ -27,7 +27,6 @@ public class MainHandler extends Handler {
         super.handleMessage(msg);
         switch (msg.what) {
             case UPDATE_COINS_DATA_LIST:
-                Log.d("Debug","Message Is Received in Main Handler");  //TODO: Remove this line
                 updateCoinsDataRecyclerView();
                 break;
         }
@@ -35,8 +34,7 @@ public class MainHandler extends Handler {
 
 
     private void updateCoinsDataRecyclerView() {
-        Log.d("Debug","Update RecyclerView");  //TODO: Remove this line
         MainActivity main = mainActivityWeakReference.get();
-        main.listOfCoinsAdapter.notifyDataSetChanged();
+        // main.listOfCoinsAdapter.notifyDataSetChanged();  // D'ont Work
     }
 }

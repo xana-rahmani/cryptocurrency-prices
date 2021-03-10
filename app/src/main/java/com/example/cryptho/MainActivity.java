@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.HandlerThread;
+import android.util.Log;
 import android.view.View;
 
 import com.example.cryptho.adaptor.ListOfCoinsAdapter;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // RecyclerView: list of coins data
-    private RecyclerView recyclerListOfCoins;
     public ListOfCoinsAdapter listOfCoinsAdapter;
 
     @Override
@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         mainHandler = new MainHandler(this, handlerThread.getLooper());
 
         this.mmv = MainModelView.getInstance();
-        recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
+
+        // Recycler View
+        RecyclerView recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
         listOfCoinsAdapter = new ListOfCoinsAdapter(this,  dataHolder.getCoinsData());
         recyclerListOfCoins.setAdapter(listOfCoinsAdapter);
         recyclerListOfCoins.setLayoutManager(new LinearLayoutManager(this));
