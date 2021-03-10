@@ -65,15 +65,15 @@ public class MainModelView {
             @Override
             public void run() {
                 try {
-                    // step1. Get 10 Coins Data.
+                    // step1.   Get 10 Coins Data.
                     HttpRequest httpRequest = new HttpRequest();
                     Response response = httpRequest.call(url, ApiToken, ApiHeaderFormat);
                     if (response == null) return;
 
-                    // step2. Convert String response to Json object.
+                    // step2.   Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
-                    // step3. Parse json data and Save in dataHolder ArrayList.
+                    // step3.   Parse json data and Save in dataHolder ArrayList.
                     SaveNewCoinsData(jsonObject);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -84,7 +84,7 @@ public class MainModelView {
 
     private void CreateCoinMarketCapUrl(){
         String UrlFormat = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(UrlFormat).newBuilder();
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(UrlFormat)).newBuilder();
         urlBuilder.addQueryParameter("limit", "10");
         urlBuilder.addQueryParameter("convert", "USD");
         CoinMarketCapUrl = urlBuilder.build().toString();
