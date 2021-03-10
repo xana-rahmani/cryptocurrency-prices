@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.mmv = MainModelView.getInstance();
         recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
-        listOfCoinsAdapter = new ListOfCoinsAdapter(this, dataHolder.CoinsData);
+        listOfCoinsAdapter = new ListOfCoinsAdapter(this,  dataHolder.getCoinsData());
         recyclerListOfCoins.setAdapter(listOfCoinsAdapter);
         recyclerListOfCoins.setLayoutManager(new LinearLayoutManager(this));
 

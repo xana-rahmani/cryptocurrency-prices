@@ -3,7 +3,7 @@ package com.example.cryptho.utils;
 import java.util.ArrayList;
 
 public class DataHolder {
-    public ArrayList<CoinData> CoinsData = new ArrayList();
+    private ArrayList<CoinData> CoinsData = new ArrayList();
 
     private static final DataHolder dataHolder = new DataHolder();
     public static synchronized DataHolder getInstance() {
@@ -35,5 +35,9 @@ public class DataHolder {
                     percent_change_24h,
                     percent_change_7d));
         }
+    }
+
+    public ArrayList<CoinData> getCoinsData() {
+        return CoinsData;
     }
 }

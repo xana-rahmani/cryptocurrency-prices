@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.ViewHolder>{
 
     Context context;
-    ArrayList<CoinData> coinsData;
+    public ArrayList<CoinData> coinsData;
 
     /**
      * Initialize the dataset of the Adapter.

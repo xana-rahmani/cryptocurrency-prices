@@ -3,6 +3,7 @@ package com.example.cryptho;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -23,8 +24,10 @@ public class MainHandler extends Handler {
 
     @Override
     public void handleMessage(@NonNull Message msg) {
+        super.handleMessage(msg);
         switch (msg.what) {
             case UPDATE_COINS_DATA_LIST:
+                Log.d("Debug","Message Is Received in Main Handler");  //TODO: Remove this line
                 updateCoinsDataRecyclerView();
                 break;
         }
@@ -32,8 +35,8 @@ public class MainHandler extends Handler {
 
 
     private void updateCoinsDataRecyclerView() {
+        Log.d("Debug","Update RecyclerView");  //TODO: Remove this line
         MainActivity main = mainActivityWeakReference.get();
-        MainModelView modelView = MainModelView.getInstance();
         main.listOfCoinsAdapter.notifyDataSetChanged();
     }
 }
