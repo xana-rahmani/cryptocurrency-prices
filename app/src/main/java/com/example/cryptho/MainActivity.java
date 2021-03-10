@@ -1,6 +1,7 @@
 package com.example.cryptho;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
