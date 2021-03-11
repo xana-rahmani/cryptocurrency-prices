@@ -39,6 +39,8 @@ public class MainHandler extends Handler {
     private void updateCoinsDataRecyclerView() {
         MainActivity main = mainActivityWeakReference.get();
 
+        Log.v("Thread-is: ", String.valueOf(Looper.myLooper() == Looper.getMainLooper()));  //TODO: Remove this line
+
         main.runOnUiThread(new Runnable() {
             @Override
             public void run() {
