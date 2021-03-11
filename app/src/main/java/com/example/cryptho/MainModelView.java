@@ -81,7 +81,7 @@ public class MainModelView {
                     // step4.   Send Message to handler for update view.
                     Message msg = Message.obtain();
                     msg.what = UPDATE_COINS_DATA_LIST;
-                    handler.dispatchMessage(msg);
+                    handler.sendMessage(msg);
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -115,7 +115,6 @@ public class MainModelView {
                 double change_24h = DR.Round(coinUsdValue.getDouble("percent_change_24h"), null);
                 double change_7d = DR.Round(coinUsdValue.getDouble("percent_change_7d"), null);
 
-                Log.d("COIN",coin_name + ": " + coin_price );  //TODO: Remove this line
                 dataHolder.addOrUpdateCoinData(coin_name, coin_symbol, coin_price,
                         change_1h, change_24h, change_7d);
             }

@@ -38,15 +38,7 @@ public class MainHandler extends Handler {
 
     private void updateCoinsDataRecyclerView() {
         MainActivity main = mainActivityWeakReference.get();
-
-        Log.v("Thread-is: ", String.valueOf(Looper.myLooper() == Looper.getMainLooper()));  //TODO: Remove this line
-
-        main.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                main.listOfCoinsAdapter.updateRecyclerViewData(dataHolder.getCoinsData());
-                main.listOfCoinsAdapter.notifyDataSetChanged();  // D'ont Work
-            }
-        });
+        main.listOfCoinsAdapter.updateRecyclerViewData(dataHolder.getCoinsData());
+        main.listOfCoinsAdapter.notifyDataSetChanged();  // D'ont Work
     }
 }
