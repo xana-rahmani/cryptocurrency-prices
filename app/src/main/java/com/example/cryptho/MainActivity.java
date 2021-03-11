@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private MainModelView mmv;
 
     private MainHandler mainHandler;
-    private Looper mainLooper = Looper.getMainLooper();
 
     public ListOfCoinsAdapter listOfCoinsAdapter;
 
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainHandler = new MainHandler(this, mainLooper);
+        mainHandler = new MainHandler(this, Looper.getMainLooper());
 
         this.mmv = MainModelView.getInstance();
 
