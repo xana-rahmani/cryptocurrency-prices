@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private HandlerThread handlerThread = new HandlerThread("HandlerThread");
     private MainHandler mainHandler;
+    private Looper mainLooper = Looper.getMainLooper();
 
     private DataHolder dataHolder = DataHolder.getInstance();
     public ListOfCoinsAdapter listOfCoinsAdapter;
@@ -33,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         handlerThread.start();
-        mainHandler = new MainHandler(this, handlerThread.getLooper());
+        mainHandler = new MainHandler(this, mainLooper);
 
         this.mmv = MainModelView.getInstance();
 
         // Recycler View
         RecyclerView recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
-        listOfCoinsAdapter = new ListOfCoinsAdapter(this,  dataHolder.getCoinsData());
+        listOfCoinsAdapter = new ListOfCoinsAdapter(this);
         recyclerListOfCoins.setAdapter(listOfCoinsAdapter);
         recyclerListOfCoins.setLayoutManager(new LinearLayoutManager(this));
 
