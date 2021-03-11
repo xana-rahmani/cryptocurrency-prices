@@ -111,9 +111,9 @@ public class MainModelView {
 
                 JSONObject coinUsdValue = coinData.getJSONObject("quote").getJSONObject("USD");
                 double coin_price = DR.Round(coinUsdValue.getDouble("price"), 3);
-                double change_1h = DR.Round(coinUsdValue.getDouble("percent_change_1h"), null);
-                double change_24h = DR.Round(coinUsdValue.getDouble("percent_change_24h"), null);
-                double change_7d = DR.Round(coinUsdValue.getDouble("percent_change_7d"), null);
+                int change_1h = (int) coinUsdValue.getDouble("percent_change_1h");
+                int change_24h = (int) coinUsdValue.getDouble("percent_change_24h");
+                int change_7d = (int) coinUsdValue.getDouble("percent_change_7d");
 
                 dataHolder.addOrUpdateCoinData(coin_name, coin_symbol, coin_price,
                         change_1h, change_24h, change_7d);

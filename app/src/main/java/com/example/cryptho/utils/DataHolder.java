@@ -16,9 +16,9 @@ public class DataHolder {
 
     public void addOrUpdateCoinData(String name, String symbol,
                                     double price,
-                                    double percent_change_1h,
-                                    double percent_change_24h,
-                                    double percent_change_7d) {
+                                    int percent_change_1h,
+                                    int percent_change_24h,
+                                    int percent_change_7d) {
         for (CoinData cd : CoinsData){
             if (cd.getName().equals(name)){
                 cd.setPrice(price);
