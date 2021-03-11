@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cryptho.MainActivity;
 import com.example.cryptho.R;
 import com.example.cryptho.utils.CoinData;
 
@@ -22,12 +23,14 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
 
     Context context;
     public ArrayList<CoinData> coinsData = new ArrayList();
+    private  MainActivity mainActivity;
 
     /**
      * Initialize the dataset of the Adapter.
      */
-    public ListOfCoinsAdapter(Context ctx){
+    public ListOfCoinsAdapter(Context ctx, MainActivity mainActivity){
         context = ctx;
+        this.mainActivity = mainActivity;
     }
 
 
@@ -61,6 +64,13 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
     @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.showCoinChart(coinsData.get(position).getSymbol());
+            }
+        });
+
         holder.coinName.setText(
                 String.format("%s", coinsData.get(position).getName())
         );

@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import com.example.cryptho.adaptor.ListOfCoinsAdapter;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Recycler View
         RecyclerView recyclerListOfCoins = findViewById(R.id.recyclerListOfCoins);
-        listOfCoinsAdapter = new ListOfCoinsAdapter(this);
+        listOfCoinsAdapter = new ListOfCoinsAdapter(this, this);
         recyclerListOfCoins.setAdapter(listOfCoinsAdapter);
         recyclerListOfCoins.setLayoutManager(new LinearLayoutManager(this));
 
@@ -52,5 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void showMoreCoin(View view) {
         mmv.showMoreCoin(mainHandler);
+    }
+
+    public void showCoinChart(String coinSymbol){
+        Log.v("MainActivity", "showCoinChart >> " + coinSymbol);
     }
 }
