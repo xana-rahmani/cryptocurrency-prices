@@ -24,36 +24,34 @@
             app:layout_constraintTop_toBottomOf="@+id/coin_Info">
 
             <TextView
-                android:id="@+id/coinName"
-                android:layout_width="150dp"
-                android:layout_height="0dp"
+                android:id="@+id/coinNameAndSymbol"
+                android:layout_width="180dp"
+                android:layout_height="39dp"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="18dp"
                 android:text="@string/coin_info"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/coinPercentChange1h"
-                android:layout_width="50dp"
-                android:layout_height="22dp"
-                android:layout_marginTop="17dp"
-                android:layout_marginBottom="15dp"
-                android:text="@string/change_1h"
+                android:id="@+id/coinPrice"
+                android:layout_width="140dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="270dp"
+                android:layout_marginLeft="270dp"
+                android:layout_marginTop="16dp"
+                android:shadowColor="#FFFFFF"
+                android:text="@string/coin_price"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/coinName"
-                app:layout_constraintVertical_bias="0.333" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/_1h"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="80dp"
@@ -63,9 +61,67 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/coinPercentChange1h"
                 app:layout_constraintHorizontal_bias="0.259"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/coinPercentChange1h"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/_1h" />
+
+            <TextView
+                android:id="@+id/_24h"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/_24h"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coinPercentChange1h" />
+
+            <TextView
+                android:id="@+id/coinPercentChange24h"
+                android:layout_width="70dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="46dp"
+                android:layout_marginRight="46dp"
+                android:layout_marginBottom="15dp"
+                android:shadowColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+            <TextView
+                android:id="@+id/_7D"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/_7D"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/coinPercentChange24h" />
+
+
+            <TextView
+                android:id="@+id/coinPercentChange7D"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/_24h" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

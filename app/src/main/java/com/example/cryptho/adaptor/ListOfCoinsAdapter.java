@@ -43,12 +43,15 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView coinName, coinPercentChange1h;
+        private final TextView coinNameAndSymbol, coinPrice, coinPercentChange1h, coinPercentChange24h, coinPercentChange7D;
         public ViewHolder(@NonNull View view){
             super(view);
             // Define click listener for the ViewHolder's View
-            coinName = (TextView) view.findViewById(R.id.coinName);
+            coinNameAndSymbol = (TextView) view.findViewById(R.id.coinNameAndSymbol);
+            coinPrice = (TextView) view.findViewById(R.id.coinPrice);
             coinPercentChange1h = (TextView) view.findViewById(R.id.coinPercentChange1h);
+            coinPercentChange24h = (TextView) view.findViewById(R.id.coinPercentChange24h);
+            coinPercentChange7D = (TextView) view.findViewById(R.id.coinPercentChange7D);
         }
     }
 
@@ -71,20 +74,51 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
             }
         });
 
-        holder.coinName.setText(
-                String.format("%s", coinsData.get(position).getName())
+        holder.coinNameAndSymbol.setText(
+                String.format("%s | %s",
+                        coinsData.get(position).getSymbol(),
+                        coinsData.get(position).getName())
         );
+
+
+        holder.coinPrice.setText(String.format("%.2f$", coinsData.get(position).getPrice()));
 
         int color = 0;
-        if (coinsData.get(position).getPercent_change_1h() > 0)
-            color = Color.GREEN;
-        else if (coinsData.get(position).getPercent_change_1h() < 0)
-            color = Color.RED;
+        int GREEN = 0xFF3E8E14;
+        int RED = 0xFFAE0000;
 
-        holder.coinPercentChange1h.setTextColor(color);
+        if (coinsData.get(position).getPercent_change_1h() > 0)
+            color = GREEN;
+        else if (coinsData.get(position).getPercent_change_1h() < 0)
+            color = RED;
+
+        if (color != 0) holder.coinPercentChange1h.setTextColor(color);
         holder.coinPercentChange1h.setText(
-                String.format("%.2f%%", coinsData.get(position).getPercent_change_1h())
-        );
+                String.format("%d%%", coinsData.get(position).getPercent_change_1h()));
+
+
+        color = 0;
+        if (coinsData.get(position).getPercent_change_24h() > 0)
+            color = GREEN;
+        else if (coinsData.get(position).getPercent_change_24h() < 0)
+            color = RED;
+
+        if (color != 0) holder.coinPercentChange24h.setTextColor(color);
+        holder.coinPercentChange24h.setText(
+                String.format("%d%%", coinsData.get(position).getPercent_change_24h()));
+
+
+        color = 0;
+        if (coinsData.get(position).getPercent_change_7D() > 0)
+            color = GREEN;
+        else if (coinsData.get(position).getPercent_change_7D() < 0)
+            color = RED;
+
+        if (color != 0) holder.coinPercentChange7D.setTextColor(color);
+        holder.coinPercentChange7D.setText(
+                String.format("%d%%", coinsData.get(position).getPercent_change_7D()));
+
+
     }
 
     /** Return the size of your data set (invoked by the layout manager) **/
