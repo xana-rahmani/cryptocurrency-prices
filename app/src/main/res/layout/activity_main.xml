@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListOfCoins"
         android:layout_width="411dp"
-        android:layout_height="640dp"
+        android:layout_height="610dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/showMoreCoin"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +28,20 @@
         app:backgroundTint="#8F0404"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="15dp"
+        android:onClick="reloadCoinList"
+        android:text="@string/reload"
+        android:textColor="#081E32"
+        app:backgroundTint="#24A4F8"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(this, OHLCActivity.class);
         switchActivityIntent.putExtra("symbol",coinSymbol);
         startActivity(switchActivityIntent);
-        Log.v("MainActivity", "showCoinChart >> " + coinSymbol);
+        Log.v("MainActivity", "showCoinChart >> " + coinSymbol); // TODO: Remove Log
+    }
+
+    public void reloadCoinList(View view){
     }
 }
