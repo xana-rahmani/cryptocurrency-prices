@@ -1,4 +1,4 @@
-package com.example.cryptho.utils;
+package com.example.cryptho.data;
 
 public class CoinData {
     private final String name;

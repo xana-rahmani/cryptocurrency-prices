@@ -3,7 +3,6 @@ package com.example.cryptho.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptho.MainActivity;
 import com.example.cryptho.R;
-import com.example.cryptho.utils.CoinData;
+import com.example.cryptho.data.CoinData;
 
 import java.util.ArrayList;
 

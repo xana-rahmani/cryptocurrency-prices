@@ -4,15 +4,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.cryptho.adaptor.ListOfCoinsAdapter;
-import com.example.cryptho.utils.DataHolder;
+import com.example.cryptho.data.DataHolder;
 import com.example.cryptho.utils.DoubleRounder;
+import com.example.cryptho.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -28,6 +29,7 @@ public class MainModelView {
     static private MainModelView me;
     final private DataHolder dataHolder = DataHolder.getInstance();
     final private DoubleRounder DR = new DoubleRounder();
+    final private Utils utils = new Utils();
 
     //Main Handler Messages
     int UPDATE_COINS_DATA_LIST = 1;
@@ -59,7 +61,7 @@ public class MainModelView {
         String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
         String ApiHeaderFormat = "X-CMC_PRO_API_KEY";
 
-        if (CoinMarketCapUrl == null) CreateCoinMarketCapUrl();
+        if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
 
@@ -70,15 +72,22 @@ public class MainModelView {
                     // step1.   Get 10 Coins Data.
                     HttpRequest httpRequest = new HttpRequest();
                     Response response = httpRequest.call(url, ApiToken, ApiHeaderFormat);
-                    if (response == null) return;
+                    if (response == null) return; // TODO: Notification
 
                     // step2.   Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
-                    // step3.   Parse json data and Save in dataHolder ArrayList.
+                    // step3.   Save in dataHolder ArrayList.
                     SaveNewCoinsData(jsonObject);
 
-                    // step4.   Send Message to handler for update view.
+                    //step4.    Get New Coin icons
+                    String[] symbols = getCoinsSymbols(jsonObject);
+                    String coinsInfoUrl = utils.getCoinsInfoUrl(symbols);
+                    response = httpRequest.call(coinsInfoUrl, ApiToken, ApiHeaderFormat);
+                    jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
+                    getCoinsIcon(jsonObject, symbols);
+
+                    // step5.   Send Message to handler for update view.
                     Message msg = Message.obtain();
                     msg.what = UPDATE_COINS_DATA_LIST;
                     handler.sendMessage(msg);
@@ -88,14 +97,6 @@ public class MainModelView {
                 }
             }
         });
-    }
-
-    private void CreateCoinMarketCapUrl(){
-        String UrlFormat = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
-        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(UrlFormat)).newBuilder();
-        urlBuilder.addQueryParameter("limit", "10");
-        urlBuilder.addQueryParameter("convert", "USD");
-        CoinMarketCapUrl = urlBuilder.build().toString();
     }
 
     // Parse coins data json and Save in dataHolder ArrayList.
@@ -125,5 +126,43 @@ public class MainModelView {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private String[] getCoinsSymbols(JSONObject jsonCoinsData){
+        String[] symbols = new String[0];
+        try {
+            JSONArray dataArray = jsonCoinsData.getJSONArray("data");
+            symbols = new String[dataArray.length()];
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject coinData = dataArray.getJSONObject(i);
+                symbols[i] = coinData.getString("symbol");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return symbols;
+    }
+
+    private void getCoinsIcon(JSONObject coinsInfo, String[] symbols) {
+        ArrayList<String> url_coinsIcon = new ArrayList<>();
+
+        try {
+            JSONObject data = coinsInfo.getJSONObject("data");
+            for (int i = 0; i < symbols.length; i++) {
+                JSONObject coin_data = data.getJSONObject(symbols[i]);
+                url_coinsIcon.add(coin_data.getString("logo"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        // send request to get image file
+        HttpRequest httpRequest = new HttpRequest();
+        Log.v("icon urls: ", "");
+        for(String url : url_coinsIcon)
+            Log.v("\t", url);
+//        response = httpRequest.call(coinsInfoUrl, ApiToken, ApiHeaderFormat);
+
     }
 }

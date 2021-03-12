@@ -1,4 +1,4 @@
-package com.example.cryptho.utils;
+package com.example.cryptho.data;
 
 import java.util.ArrayList;
 

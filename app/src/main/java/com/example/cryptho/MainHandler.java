@@ -3,11 +3,10 @@ package com.example.cryptho;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.cryptho.utils.DataHolder;
+import com.example.cryptho.data.DataHolder;
 
 import java.lang.ref.WeakReference;
 
