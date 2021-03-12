@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListOfCoins"
         android:layout_width="411dp"
-        android:layout_height="610dp"
+        android:layout_height="640dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/showMoreCoin"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/showMoreCoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:onClick="showMoreCoin"
         android:text="@string/more_coin"
         app:backgroundTint="#8F0404"
