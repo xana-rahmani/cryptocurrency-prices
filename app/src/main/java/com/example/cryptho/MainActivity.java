@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -55,7 +56,13 @@ public class MainActivity extends AppCompatActivity {
         mmv.showMoreCoin(mainHandler);
     }
 
+    /*
+    this function switches to the ohlc activity.
+     */
     public void showCoinChart(String coinSymbol){
+        Intent switchActivityIntent = new Intent(this, OHLCActivity.class);
+        switchActivityIntent.putExtra("symbol",coinSymbol);
+        startActivity(switchActivityIntent);
         Log.v("MainActivity", "showCoinChart >> " + coinSymbol);
     }
 }

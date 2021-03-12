@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.cryptho.data.DataHolder;
 import com.example.cryptho.utils.DoubleRounder;
+import com.example.cryptho.utils.Shared_Objects;
 import com.example.cryptho.utils.Utils;
 
 import org.json.JSONArray;
@@ -38,24 +39,16 @@ public class MainModelView {
     private int NumberOfCoins = 0;
     private String CoinMarketCapUrl = null;
 
-    // Thread Pool
-    int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-    int KEEP_ALIVE_TIME = 2;
-    TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
-    BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
-    ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
-            NUMBER_OF_CORES*2,
-            KEEP_ALIVE_TIME,
-            KEEP_ALIVE_TIME_UNIT,
-            taskQueue);
 
 
-    static public MainModelView getInstance() {
+
+    static public com.example.cryptho.MainModelView getInstance() {
         if (me == null) {
-            me = new MainModelView();
+            me = new com.example.cryptho.MainModelView();
         }
         return me;
     }
+
 
     public void showMoreCoin(Handler handler) {
         String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
@@ -65,7 +58,7 @@ public class MainModelView {
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
 
-        executorService.execute(new Runnable() {
+        Shared_Objects.executorService.execute(new Runnable() {
             @Override
             public void run() {
                 try {

@@ -36,4 +36,19 @@ public class DataHolder {
     public synchronized ArrayList<CoinData> getCoinsData() {
         return (ArrayList<CoinData>) CoinsData.clone();
     }
+
+    /*
+    the following functions are for working with the OHLC similar to coinsData. #khash
+     */
+    private ArrayList<CandleStick> OHLC = new ArrayList<>();
+    public synchronized int OHLC_Size() {
+        return this.OHLC.size();
+    }
+    public synchronized void update_OHLC(ArrayList<CandleStick> new_OHLC)
+    {
+        this.OHLC = new_OHLC;
+    }
+    public synchronized ArrayList<CandleStick> get_OHLC(){
+        return (ArrayList<CandleStick>) this.OHLC.clone();
+    }
 }

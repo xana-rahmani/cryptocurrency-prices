@@ -6,4 +6,8 @@
     <string name="_1h">1h:</string>
     <string name="_24h">1D:</string>
     <string name="_7D">7D:</string>
+    <string name="open">open:</string>
+    <string name="high">high:</string>
+    <string name="low">low:</string>
+    <string name="close">close:</string>
 </resources>
