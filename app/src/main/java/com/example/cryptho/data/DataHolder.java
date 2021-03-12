@@ -3,7 +3,7 @@ package com.example.cryptho.data;
 import java.util.ArrayList;
 
 public class DataHolder {
-    private volatile ArrayList<CoinData> CoinsData = new ArrayList();
+    private final ArrayList<CoinData> CoinsData = new ArrayList();
 
     private static final DataHolder dataHolder = new DataHolder();
     public static synchronized DataHolder getInstance() {
@@ -35,6 +35,12 @@ public class DataHolder {
 
     public synchronized ArrayList<CoinData> getCoinsData() {
         return (ArrayList<CoinData>) CoinsData.clone();
+    }
+
+    public synchronized void clearCoinsData(){
+        synchronized (this.CoinsData){
+            CoinsData.clear();
+        }
     }
 
     /*

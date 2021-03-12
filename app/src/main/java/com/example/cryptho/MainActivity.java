@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public void reloadCoinList(View view){
+        mmv.reloadCoinList(mainHandler);
+    }
+
     public void showMoreCoin(View view) {
         mmv.showMoreCoin(mainHandler);
     }
@@ -63,9 +67,5 @@ public class MainActivity extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(this, OHLCActivity.class);
         switchActivityIntent.putExtra("symbol",coinSymbol);
         startActivity(switchActivityIntent);
-        Log.v("MainActivity", "showCoinChart >> " + coinSymbol); // TODO: Remove Log
-    }
-
-    public void reloadCoinList(View view){
     }
 }

@@ -36,7 +36,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
-        android:text="@string/_7Days"
+        android:text="@string/_30Days"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn7candles" />

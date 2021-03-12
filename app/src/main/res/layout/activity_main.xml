@@ -25,6 +25,7 @@
         android:layout_marginBottom="15dp"
         android:onClick="showMoreCoin"
         android:text="@string/more_coin"
+        android:textStyle="bold"
         app:backgroundTint="#8F0404"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +40,9 @@
         android:layout_marginBottom="15dp"
         android:onClick="reloadCoinList"
         android:text="@string/reload"
-        android:textColor="#081E32"
-        app:backgroundTint="#24A4F8"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:backgroundTint="#105787"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

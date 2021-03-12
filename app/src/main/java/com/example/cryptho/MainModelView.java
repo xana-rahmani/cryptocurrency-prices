@@ -16,14 +16,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
-
-import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 public class MainModelView {
@@ -39,6 +32,10 @@ public class MainModelView {
     private int NumberOfCoins = 0;
     private String CoinMarketCapUrl = null;
 
+    // Coin Market Cap Api Info
+    private final String CMC_ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
+    private final String CMC_ApiHeaderFormat = "X-CMC_PRO_API_KEY";
+
 
 
 
@@ -49,11 +46,39 @@ public class MainModelView {
         return me;
     }
 
+    public void reloadCoinList(Handler handler){
+        if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
+        int start = 1;  // start is offset (1-based index) of the paginated list.
+        String url = CoinMarketCapUrl + "&start=" + start;
+
+        Shared_Objects.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // step1.   Get 10 First Coins Data.
+                    HttpRequest httpRequest = new HttpRequest();
+                    Response response = httpRequest.call(url, CMC_ApiToken, CMC_ApiHeaderFormat);
+                    if (response == null) return; // TODO: Notification
+
+                    // step2.   Convert String response to Json object.
+                    JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
+
+                    // step3.   Save in dataHolder ArrayList.
+                    SaveNewCoinsData(jsonObject, true);
+
+                    // step5.   Send Message to handler for update view.
+                    Message msg = Message.obtain();
+                    msg.what = UPDATE_COINS_DATA_LIST;
+                    handler.sendMessage(msg);
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void showMoreCoin(Handler handler) {
-        String ApiToken = "7fc06983-3d6c-437a-8bc5-09bd5b4d19bc";
-        String ApiHeaderFormat = "X-CMC_PRO_API_KEY";
-
         if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
@@ -64,19 +89,19 @@ public class MainModelView {
                 try {
                     // step1.   Get 10 Coins Data.
                     HttpRequest httpRequest = new HttpRequest();
-                    Response response = httpRequest.call(url, ApiToken, ApiHeaderFormat);
+                    Response response = httpRequest.call(url, CMC_ApiToken, CMC_ApiHeaderFormat);
                     if (response == null) return; // TODO: Notification
 
                     // step2.   Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
                     // step3.   Save in dataHolder ArrayList.
-                    SaveNewCoinsData(jsonObject);
+                    SaveNewCoinsData(jsonObject, false);
 
                     //step4.    Get New Coin icons
                     String[] symbols = getCoinsSymbols(jsonObject);
                     String coinsInfoUrl = utils.getCoinsInfoUrl(symbols);
-                    response = httpRequest.call(coinsInfoUrl, ApiToken, ApiHeaderFormat);
+                    response = httpRequest.call(coinsInfoUrl, CMC_ApiToken, CMC_ApiHeaderFormat);
                     jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
                     getCoinsIcon(jsonObject, symbols);
 
@@ -93,7 +118,11 @@ public class MainModelView {
     }
 
     // Parse coins data json and Save in dataHolder ArrayList.
-    private void SaveNewCoinsData(JSONObject jsonCoinsData){
+    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData){
+        if (clearCoinsData){
+            dataHolder.clearCoinsData();
+        }
+
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
 
