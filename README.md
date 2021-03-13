@@ -1,5 +1,5 @@
 Cryptocurrency Prices
 
-Xana Rahmani
-Khashyar Khajavi
-Mohammad Hoseini Rad
+- Xana Rahmani
+- Khashyar Khajavi
+- Mohammad Hoseini Rad
