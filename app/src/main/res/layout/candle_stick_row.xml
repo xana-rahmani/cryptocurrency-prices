@@ -126,6 +126,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/high" />
 
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/high"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="9dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

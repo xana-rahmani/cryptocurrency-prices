@@ -3,6 +3,8 @@ package com.example.cryptho.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,7 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView openPrice,highPrice ,closePrice, lowPrice;
+        private final TextView openPrice,highPrice ,closePrice, lowPrice,number;
         public ViewHolder(@NonNull View view){
             super(view);
             // Define click listener for the ViewHolder's View
@@ -50,6 +52,7 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
             highPrice = (TextView) view.findViewById(R.id.highprice);
             lowPrice = (TextView) view.findViewById(R.id.lowprice);
             closePrice = (TextView) view.findViewById(R.id.closeprice);
+             number = (TextView) view.findViewById(R.id.number);
         }
     }
 
@@ -86,6 +89,9 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
         holder.lowPrice.setTextColor(RED);
 
         holder.closePrice.setText(String.format("%.2f$", OHLC.get(position).getClose()));
+//        Log.d("testnumber",String.valueOf(position + 1));
+        holder.number.setText(String.valueOf(position + 1));
+        holder.number.setTextColor(Color.BLUE);
     }
 
     /** Return the size of your data set (invoked by the layout manager) **/
