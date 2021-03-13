@@ -3,7 +3,6 @@ package com.example.cryptho;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.example.cryptho.data.DataHolder;
 import com.example.cryptho.data.MyMessage;
@@ -200,7 +199,6 @@ public class MainModelView {
 
         // send request to get image file
         HttpRequest httpRequest = new HttpRequest();
-        Log.v("icon urls: ", "");
         int i = 0;
         for (String url : url_coinsIcon) // TODO
         {
@@ -218,7 +216,6 @@ public class MainModelView {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data.toString());
             bufferedWriter.close();
-            Log.v("cached", "DONE" + ctx.getFilesDir());
         } catch (IOException e) {
             e.printStackTrace();
         }

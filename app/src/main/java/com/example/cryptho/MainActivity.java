@@ -6,24 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.example.cryptho.adaptor.ListOfCoinsAdapter;
 import com.example.cryptho.data.MyMessage;
-
-import org.json.JSONObject;
-
-import java.io.FileOutputStream;
 
 
 public class MainActivity extends AppCompatActivity {
