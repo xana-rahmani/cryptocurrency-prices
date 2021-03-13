@@ -20,10 +20,11 @@
 
     <Button
         android:id="@+id/btn7candles"
+        android:text="@string/_7Days"
+        android:onClick="get7daysChartData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:text="@string/_7Days"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn30candles"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -31,12 +32,13 @@
 
     <Button
         android:id="@+id/btn30candles"
+        android:text="@string/_30Days"
+        android:onClick="get30daysChartData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="15dp"
-        android:text="@string/_30Days"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn7candles" />
