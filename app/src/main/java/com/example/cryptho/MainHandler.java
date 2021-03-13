@@ -49,6 +49,7 @@ public class MainHandler extends Handler {
     private void showNotification(String notif_text) {
         MainActivity main = mainActivityWeakReference.get();
         Toast.makeText(main.getApplicationContext(), notif_text, Toast.LENGTH_LONG).show();
+        main.activeShowMoreButton();
     }
 
 }
