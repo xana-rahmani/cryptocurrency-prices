@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -20,12 +21,15 @@ import android.widget.ProgressBar;
 import com.example.cryptho.adaptor.ListOfCoinsAdapter;
 import com.example.cryptho.data.MyMessage;
 
+import org.json.JSONObject;
+
+import java.io.FileOutputStream;
+
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     private MainModelView mmv;
-
     private MainHandler mainHandler;
 
     public ListOfCoinsAdapter listOfCoinsAdapter;
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (isConnected()) {
             deactiveShowMoreButton();
-            mmv.showMoreCoin(mainHandler);
+            mmv.showMoreCoin(mainHandler,getApplicationContext());
         } else {
             // Disconnected
             Message msg = Message.obtain();
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             msg.what = myMessage.SHOW_NOTIFICATION;
             msg.arg1 = 0;
             mainHandler.sendMessage(msg);
-        } else mmv.reloadCoinList(mainHandler);
+        } else mmv.reloadCoinList(mainHandler,getApplicationContext());
     }
 
     public void showMoreCoin(View view) {
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             msg.what = myMessage.SHOW_NOTIFICATION;
             msg.arg1 = 0;
             mainHandler.sendMessage(msg);
-        } else mmv.showMoreCoin(mainHandler);
+        } else mmv.showMoreCoin(mainHandler,getApplicationContext());
     }
 
     /*
@@ -115,4 +119,6 @@ public class MainActivity extends AppCompatActivity {
         btnReload.setVisibility(View.VISIBLE);
         pbLoadingMore.setVisibility(View.INVISIBLE);
     }
+
+
 }

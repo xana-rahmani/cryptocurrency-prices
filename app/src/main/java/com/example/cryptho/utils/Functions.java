@@ -1,11 +1,15 @@
 package com.example.cryptho.utils;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
 
 /*
 This class is designed for the useful static functions which might come to hand
@@ -38,4 +42,6 @@ public class Functions {
         if (p == null) return org.decimal4j.util.DoubleRounder.round(d, 2);
         return org.decimal4j.util.DoubleRounder.round(d, p);
     }
+
+
 }
