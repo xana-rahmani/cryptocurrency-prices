@@ -80,28 +80,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reloadCoinList(View view) {
-        deactiveShowMoreButton();
         if (!isConnected()) {
             Message msg = Message.obtain();
             msg.what = myMessage.SHOW_NOTIFICATION;
             msg.arg1 = 0;
             mainHandler.sendMessage(msg);
-        } else mmv.reloadCoinList(mainHandler,getApplicationContext());
+        } else {
+            deactiveShowMoreButton();
+            mmv.reloadCoinList(mainHandler,getApplicationContext());
+        }
     }
 
     public void showMoreCoin(View view) {
-        deactiveShowMoreButton();
         if (!isConnected()) {
             Message msg = Message.obtain();
             msg.what = myMessage.SHOW_NOTIFICATION;
             msg.arg1 = 0;
             mainHandler.sendMessage(msg);
-        } else mmv.showMoreCoin(mainHandler,getApplicationContext());
+        } else{
+            deactiveShowMoreButton();
+            mmv.showMoreCoin(mainHandler,getApplicationContext());
+        }
     }
 
-    /*
-    this function switches to the ohlc activity.
-     */
+
+    // this function switches to the ohlc activity.
     public void showCoinChart(String coinSymbol) {
         Intent switchActivityIntent = new Intent(this, OHLCActivity.class);
         switchActivityIntent.putExtra("symbol", coinSymbol);
