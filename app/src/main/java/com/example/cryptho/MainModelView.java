@@ -46,7 +46,7 @@ public class MainModelView {
         return me;
     }
 
-    public void reloadCoinList(Handler handler,Context mainCtx) {
+    public void reloadCoinList(Handler handler,Context ctx) {
         if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
@@ -69,8 +69,8 @@ public class MainModelView {
                     // step2.   Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
-                    // step3.   Save in dataHolder ArrayList.
-                    SaveNewCoinsData(jsonObject, true,true,mainCtx);
+                    // step3.   Save in dataHolder ArrayList and Cache
+                    SaveNewCoinsData(jsonObject, true,true, ctx);
 
                     //step4.    Get New Coin icons
                     String[] symbols = getCoinsSymbols(jsonObject);
@@ -91,7 +91,7 @@ public class MainModelView {
         });
     }
 
-    public void showMoreCoin(Handler handler,Context mainCtx) {
+    public void showMoreCoin(Handler handler,Context ctx) {
         if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
@@ -115,7 +115,7 @@ public class MainModelView {
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
                     // step3.   Save in dataHolder ArrayList.
-                    SaveNewCoinsData(jsonObject, false, start == 1,mainCtx);
+                    SaveNewCoinsData(jsonObject, false, start == 1, ctx);
 
                     //step4.    Get New Coin icons
                     String[] symbols = getCoinsSymbols(jsonObject);
@@ -137,7 +137,7 @@ public class MainModelView {
     }
 
     // Parse coins data json and Save in dataHolder ArrayList.
-    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData,Boolean cache, Context mainCtx ) {
+    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData,Boolean cache, Context ctx ) {
         if (clearCoinsData) dataHolder.clearCoinsData();
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
@@ -158,7 +158,7 @@ public class MainModelView {
                 Shared_Objects.executorService.execute(new Runnable() {
                     @Override
                     public void run() {
-                        cacheCoinInfo(jsonCoinsData,mainCtx);
+                        cacheCoinInfo(jsonCoinsData, ctx);
                     }
                 });
             }
