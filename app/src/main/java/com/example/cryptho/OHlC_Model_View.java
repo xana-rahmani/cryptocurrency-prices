@@ -38,6 +38,12 @@ public class OHlC_Model_View {
                 HttpRequest httpRequest = new HttpRequest();
                 Response response = httpRequest.call( X_CoinAPI_Key, X_Coin_Header_Format,symbol,range);
                 try {
+                    if (response == null){
+                        Message msg = Message.obtain();
+                        msg.what = myMessage.SHOW_NOTIFICATION;
+                        msg.arg1 = 2;
+                        return;
+                    }
                     JSONArray json_of_candles = Functions.string_To_JsonArray(response.body().string());
                     ArrayList<CandleStick> OHLC = new ArrayList<>();
                     for (int i=0; i<json_of_candles.length(); i++){
