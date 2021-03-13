@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reloadCoinList(View view) {
+        deactiveShowMoreButton();
         if (!isConnected()) {
             Message msg = Message.obtain();
             msg.what = myMessage.SHOW_NOTIFICATION;

@@ -68,6 +68,13 @@ public class MainModelView {
                     // step3.   Save in dataHolder ArrayList.
                     SaveNewCoinsData(jsonObject, true);
 
+                    //step4.    Get New Coin icons
+                    String[] symbols = getCoinsSymbols(jsonObject);
+                    String coinsInfoUrl = utils.getCoinsInfoUrl(symbols);
+                    response = httpRequest.call(coinsInfoUrl, CMC_ApiToken, CMC_ApiHeaderFormat);
+                    jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
+                    getCoinsIcon(jsonObject, symbols);
+
                     // step5.   Send Message to handler for update view.
                     Message msg = Message.obtain();
                     msg.what = myMessage.UPDATE_COINS_DATA_LIST;
