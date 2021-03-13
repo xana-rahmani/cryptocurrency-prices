@@ -36,8 +36,6 @@ public class MainModelView {
     private final String CMC_ApiHeaderFormat = "X-CMC_PRO_API_KEY";
 
 
-
-
     static public com.example.cryptho.MainModelView getInstance() {
         if (me == null) {
             me = new com.example.cryptho.MainModelView();
@@ -45,7 +43,7 @@ public class MainModelView {
         return me;
     }
 
-    public void reloadCoinList(Handler handler){
+    public void reloadCoinList(Handler handler) {
         if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
@@ -128,8 +126,8 @@ public class MainModelView {
     }
 
     // Parse coins data json and Save in dataHolder ArrayList.
-    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData){
-        if (clearCoinsData){
+    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData) {
+        if (clearCoinsData) {
             dataHolder.clearCoinsData();
         }
 
@@ -138,10 +136,10 @@ public class MainModelView {
 
             for (int i = 0; i < dataArray.length(); i++) {
 
+
                 JSONObject coinData = dataArray.getJSONObject(i);
                 String coin_name = coinData.getString("name");
                 String coin_symbol = coinData.getString("symbol");
-
                 JSONObject coinUsdValue = coinData.getJSONObject("quote").getJSONObject("USD");
                 double coin_price = DR.Round(coinUsdValue.getDouble("price"), 3);
                 int change_1h = (int) coinUsdValue.getDouble("percent_change_1h");
@@ -160,7 +158,7 @@ public class MainModelView {
         }
     }
 
-    private String[] getCoinsSymbols(JSONObject jsonCoinsData){
+    private String[] getCoinsSymbols(JSONObject jsonCoinsData) {
         String[] symbols = new String[0];
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
@@ -188,12 +186,15 @@ public class MainModelView {
             e.printStackTrace();
         }
 
-
         // send request to get image file
         HttpRequest httpRequest = new HttpRequest();
-//        Log.v("icon urls: ", "");
-//        for(String url : url_coinsIcon) // TODO
-//            Log.v("\t", url);
+        Log.v("icon urls: ", "");
+        int i = 0;
+        for (String url : url_coinsIcon) // TODO
+        {
+            dataHolder.updateCoinLogo(symbols[i], url);
+            i++;
+        }
 //        response = httpRequest.call(coinsInfoUrl, ApiToken, ApiHeaderFormat);
 
     }

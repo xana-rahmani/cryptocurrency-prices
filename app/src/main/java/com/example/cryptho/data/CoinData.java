@@ -7,6 +7,7 @@ public class CoinData {
     private int percent_change_1h;
     private int percent_change_24h;
     private int percent_change_7D;
+    private String logo;
 
     public CoinData(String name, String symbol, double price,
                     int percent_change_1h,
@@ -58,5 +59,13 @@ public class CoinData {
 
     public int getPercent_change_7D() {
         return percent_change_7D;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getLogo() {
+        return logo;
     }
 }

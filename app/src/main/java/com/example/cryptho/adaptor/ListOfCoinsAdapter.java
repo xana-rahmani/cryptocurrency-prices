@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.cryptho.MainActivity;
 import com.example.cryptho.R;
 import com.example.cryptho.data.CoinData;
@@ -45,7 +46,7 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView coinNameAndSymbol, coinPrice, coinPercentChange1h, coinPercentChange24h, coinPercentChange7D;
-        private final ImageView coinAvatar;
+        private  ImageView coinAvatar;
         public ViewHolder(@NonNull View view){
             super(view);
             // Define click listener for the ViewHolder's View
@@ -121,7 +122,14 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
         holder.coinPercentChange7D.setText(
                 String.format("%d%%", coinsData.get(position).getPercent_change_7D()));
 
-//        Log.d("TAG", coinsData.get(position).get);
+        Glide
+                .with(holder.itemView)
+                .load(coinsData.get(position).getLogo())
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_background)
+                .override(50,50)
+                .into(holder.coinAvatar);
+
 
 
 
