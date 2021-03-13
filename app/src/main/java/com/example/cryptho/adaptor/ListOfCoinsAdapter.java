@@ -3,9 +3,11 @@ package com.example.cryptho.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView coinNameAndSymbol, coinPrice, coinPercentChange1h, coinPercentChange24h, coinPercentChange7D;
+        private final ImageView coinAvatar;
         public ViewHolder(@NonNull View view){
             super(view);
             // Define click listener for the ViewHolder's View
@@ -51,6 +54,7 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
             coinPercentChange1h = (TextView) view.findViewById(R.id.coinPercentChange1h);
             coinPercentChange24h = (TextView) view.findViewById(R.id.coinPercentChange24h);
             coinPercentChange7D = (TextView) view.findViewById(R.id.coinPercentChange7D);
+            coinAvatar = (ImageView) view.findViewById(R.id.coinAvatar);
         }
     }
 
@@ -116,6 +120,9 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
         if (color != 0) holder.coinPercentChange7D.setTextColor(color);
         holder.coinPercentChange7D.setText(
                 String.format("%d%%", coinsData.get(position).getPercent_change_7D()));
+
+//        Log.d("TAG", coinsData.get(position).get);
+
 
 
     }

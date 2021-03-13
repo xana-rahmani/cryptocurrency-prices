@@ -43,10 +43,12 @@ public class MainHandler extends Handler {
         MainActivity main = mainActivityWeakReference.get();
         main.listOfCoinsAdapter.updateRecyclerViewData(dataHolder.getCoinsData());
         main.listOfCoinsAdapter.notifyDataSetChanged();
+        main.activeShowMoreButton();
     }
 
     private void showNotification(String notif_text) {
         MainActivity main = mainActivityWeakReference.get();
         Toast.makeText(main.getApplicationContext(), notif_text, Toast.LENGTH_LONG).show();
     }
+
 }
