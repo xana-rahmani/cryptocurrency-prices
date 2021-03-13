@@ -51,5 +51,4 @@ public class MainHandler extends Handler {
         Toast.makeText(main.getApplicationContext(), notif_text, Toast.LENGTH_LONG).show();
         main.activeShowMoreButton();
     }
-
 }
