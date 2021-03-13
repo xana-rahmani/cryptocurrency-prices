@@ -10,10 +10,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
+import android.os.Message;
 import android.view.View;
 
 import com.example.cryptho.adaptor.ListOfCoinsAdapter;
+import com.example.cryptho.data.MyMessage;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private MainHandler mainHandler;
 
     public ListOfCoinsAdapter listOfCoinsAdapter;
+    final private MyMessage myMessage = new MyMessage();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
         if (isConnected()){
             mmv.showMoreCoin(mainHandler);
         }
+        else {
+            // Disconnected
+            Message msg = Message.obtain();
+            msg.what = myMessage.SHOW_NOTIFICATION;
+            msg.arg1 = 0;
+            mainHandler.sendMessage(msg);
+        }
+
         // TODO : go and download from cash or show error message if first time
     }
 
@@ -53,11 +64,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reloadCoinList(View view){
-        mmv.reloadCoinList(mainHandler);
+        if (!isConnected()){
+            Message msg = Message.obtain();
+            msg.what = myMessage.SHOW_NOTIFICATION;
+            msg.arg1 = 0;
+            mainHandler.sendMessage(msg);
+        }
+        else mmv.reloadCoinList(mainHandler);
     }
 
     public void showMoreCoin(View view) {
-        mmv.showMoreCoin(mainHandler);
+        if (!isConnected()){
+            Message msg = Message.obtain();
+            msg.what = myMessage.SHOW_NOTIFICATION;
+            msg.arg1 = 0;
+            mainHandler.sendMessage(msg);
+        }
+        else mmv.showMoreCoin(mainHandler);
     }
 
     /*

@@ -5,6 +5,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.cryptho.data.DataHolder;
+import com.example.cryptho.data.MyMessage;
 import com.example.cryptho.utils.DoubleRounder;
 import com.example.cryptho.utils.Shared_Objects;
 import com.example.cryptho.utils.Utils;
@@ -24,9 +25,7 @@ public class MainModelView {
     final private DataHolder dataHolder = DataHolder.getInstance();
     final private DoubleRounder DR = new DoubleRounder();
     final private Utils utils = new Utils();
-
-    //Main Handler Messages
-    int UPDATE_COINS_DATA_LIST = 1;
+    final private MyMessage myMessage = new MyMessage();
 
 
     private int NumberOfCoins = 0;
@@ -58,8 +57,13 @@ public class MainModelView {
                     // step1.   Get 10 First Coins Data.
                     HttpRequest httpRequest = new HttpRequest();
                     Response response = httpRequest.call(url, CMC_ApiToken, CMC_ApiHeaderFormat);
-                    if (response == null) return; // TODO: Notification
-
+                    if (response == null) {
+                        Message msg = Message.obtain();
+                        msg.what = myMessage.SHOW_NOTIFICATION;
+                        msg.arg1 = 1;
+                        handler.sendMessage(msg);
+                        return;
+                    }
                     // step2.   Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
@@ -68,7 +72,7 @@ public class MainModelView {
 
                     // step5.   Send Message to handler for update view.
                     Message msg = Message.obtain();
-                    msg.what = UPDATE_COINS_DATA_LIST;
+                    msg.what = myMessage.UPDATE_COINS_DATA_LIST;
                     handler.sendMessage(msg);
 
                 } catch (IOException | JSONException e) {
@@ -90,7 +94,13 @@ public class MainModelView {
                     // step1.   Get 10 Coins Data.
                     HttpRequest httpRequest = new HttpRequest();
                     Response response = httpRequest.call(url, CMC_ApiToken, CMC_ApiHeaderFormat);
-                    if (response == null) return; // TODO: Notification
+                    if (response == null) {
+                        Message msg = Message.obtain();
+                        msg.what = myMessage.SHOW_NOTIFICATION;
+                        msg.arg1 = 1;
+                        handler.sendMessage(msg);
+                        return;
+                    }
 
                     // step2.   Convert String response to Json object.
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
@@ -107,7 +117,7 @@ public class MainModelView {
 
                     // step5.   Send Message to handler for update view.
                     Message msg = Message.obtain();
-                    msg.what = UPDATE_COINS_DATA_LIST;
+                    msg.what = myMessage.UPDATE_COINS_DATA_LIST;
                     handler.sendMessage(msg);
 
                 } catch (IOException | JSONException e) {
@@ -181,9 +191,9 @@ public class MainModelView {
 
         // send request to get image file
         HttpRequest httpRequest = new HttpRequest();
-        Log.v("icon urls: ", "");
-        for(String url : url_coinsIcon)
-            Log.v("\t", url);
+//        Log.v("icon urls: ", "");
+//        for(String url : url_coinsIcon) // TODO
+//            Log.v("\t", url);
 //        response = httpRequest.call(coinsInfoUrl, ApiToken, ApiHeaderFormat);
 
     }
