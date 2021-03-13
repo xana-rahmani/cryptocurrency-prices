@@ -70,7 +70,7 @@ public class MainModelView {
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
                     // step3.   Save in dataHolder ArrayList and Cache
-                    SaveNewCoinsData(jsonObject, true,true, ctx);
+                    SaveNewCoinsData(jsonObject, true,true, ctx, false);
 
                     //step4.    Get New Coin icons
                     String[] symbols = getCoinsSymbols(jsonObject);
@@ -115,7 +115,7 @@ public class MainModelView {
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
                     // step3.   Save in dataHolder ArrayList.
-                    SaveNewCoinsData(jsonObject, false, start == 1, ctx);
+                    SaveNewCoinsData(jsonObject, false, start == 1, ctx, false);
 
                     //step4.    Get New Coin icons
                     String[] symbols = getCoinsSymbols(jsonObject);
@@ -137,7 +137,8 @@ public class MainModelView {
     }
 
     // Parse coins data json and Save in dataHolder ArrayList.
-    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData,Boolean cache, Context ctx ) {
+    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData,Boolean cache,
+                                  Context ctx, boolean isCachedData ) {
         if (clearCoinsData) dataHolder.clearCoinsData();
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
@@ -162,8 +163,11 @@ public class MainModelView {
                     }
                 });
             }
-            //After save new coins >> update NumberOfCoins
-            NumberOfCoins = dataHolder.CoinsDataSize();
+            if (isCachedData) NumberOfCoins = 0;
+            else {
+                //After save new coins >> update NumberOfCoins
+                NumberOfCoins = dataHolder.CoinsDataSize();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -236,7 +240,7 @@ public class MainModelView {
             String responce = stringBuilder.toString();
 
             JSONObject jsonObject  = new JSONObject(responce);
-            SaveNewCoinsData(jsonObject, false, false, ctx);
+            SaveNewCoinsData(jsonObject, false, false, ctx, true);
 
             // Send Message to handler for update view.
             Message msg = Message.obtain();
