@@ -33,7 +33,7 @@ public class OHLCActivity extends AppCompatActivity {
 
         // Recycler View
         RecyclerView recycler_of_OHLC = findViewById(R.id.recyclerofohlc);
-        OHLC_adapter = new OHLCAdapter(this, this);
+        OHLC_adapter = new OHLCAdapter(this);
         recycler_of_OHLC.setAdapter(OHLC_adapter);
         recycler_of_OHLC.setLayoutManager(new LinearLayoutManager(this));
     }

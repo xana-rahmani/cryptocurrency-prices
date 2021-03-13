@@ -3,8 +3,6 @@ package com.example.cryptho.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cryptho.OHLCActivity;
 import com.example.cryptho.R;
 import com.example.cryptho.data.CandleStick;
 
@@ -24,14 +21,12 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
 
     Context context;
     public ArrayList<CandleStick> OHLC = new ArrayList();
-    private OHLCActivity OHLCActivity;
 
     /**
      * Initialize the dataset of the Adapter.
      */
-    public OHLCAdapter(Context ctx, OHLCActivity OHLCActivity){
+    public OHLCAdapter(Context ctx){
         context = ctx;
-        this.OHLCActivity = OHLCActivity;
     }
 
 
@@ -48,11 +43,11 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
         public ViewHolder(@NonNull View view){
             super(view);
             // Define click listener for the ViewHolder's View
-            openPrice = (TextView) view.findViewById(R.id.openprice);
-            highPrice = (TextView) view.findViewById(R.id.highprice);
-            lowPrice = (TextView) view.findViewById(R.id.lowprice);
-            closePrice = (TextView) view.findViewById(R.id.closeprice);
-             number = (TextView) view.findViewById(R.id.number);
+            openPrice = view.findViewById(R.id.openprice);
+            highPrice = view.findViewById(R.id.highprice);
+            lowPrice = view.findViewById(R.id.lowprice);
+            closePrice = view.findViewById(R.id.closeprice);
+             number = view.findViewById(R.id.number);
         }
     }
 
@@ -68,13 +63,6 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
     @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mainActivity.showCoinChart(coinsData.get(position).getSymbol());
-//            }
-//        });
-
         holder.openPrice.setText(
                 String.format("%.2f$", OHLC.get(position).getOpen())
         );
@@ -89,9 +77,7 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
         holder.lowPrice.setTextColor(RED);
 
         holder.closePrice.setText(String.format("%.2f$", OHLC.get(position).getClose()));
-//        Log.d("testnumber",String.valueOf(position + 1));
-        holder.number.setText(String.valueOf(position + 1));
-        holder.number.setTextColor(Color.BLUE);
+        holder.number.setText(String.format("%d )", position + 1));
     }
 
     /** Return the size of your data set (invoked by the layout manager) **/
@@ -100,5 +86,3 @@ public class OHLCAdapter extends RecyclerView.Adapter<OHLCAdapter.ViewHolder>{
         return OHLC.size();
     }
 }
-
-// Log.v("TAG", "handling Massage: mHandler");
