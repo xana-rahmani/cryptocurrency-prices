@@ -3,6 +3,7 @@ package com.example.cryptho;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.cryptho.data.DataHolder;
 import com.example.cryptho.data.MyMessage;
@@ -20,7 +21,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import okhttp3.Response;
@@ -46,7 +50,7 @@ public class MainModelView {
         return me;
     }
 
-    public void reloadCoinList(Handler handler,Context ctx) {
+    public void reloadCoinList(Handler handler, Context ctx) {
         if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
@@ -70,14 +74,20 @@ public class MainModelView {
                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
 
                     // step3.   Save in dataHolder ArrayList and Cache
-                    SaveNewCoinsData(jsonObject, true,true, ctx);
+                    SaveNewCoinsData(jsonObject, true, true, ctx);
 
                     //step4.    Get New Coin icons
                     String[] symbols = getCoinsSymbols(jsonObject);
                     String coinsInfoUrl = utils.getCoinsInfoUrl(symbols);
                     response = httpRequest.call(coinsInfoUrl, CMC_ApiToken, CMC_ApiHeaderFormat);
                     jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
-                    getCoinsIcon(jsonObject, symbols);
+                    ArrayList<String> icons = getCoinsIcon(jsonObject, symbols);
+                    Shared_Objects.executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            cacheCoinLogo(icons, ctx);
+                        }
+                    });
 
                     // step5.   Send Message to handler for update view.
                     Message msg = Message.obtain();
@@ -91,7 +101,7 @@ public class MainModelView {
         });
     }
 
-    public void showMoreCoin(Handler handler,Context ctx) {
+    public void showMoreCoin(Handler handler, Context ctx) {
         if (CoinMarketCapUrl == null) CoinMarketCapUrl = utils.CreateCoinMarketCapUrl();
         int start = NumberOfCoins + 1;  // start is offset (1-based index) of the paginated list.
         String url = CoinMarketCapUrl + "&start=" + start;
@@ -122,7 +132,13 @@ public class MainModelView {
                     String coinsInfoUrl = utils.getCoinsInfoUrl(symbols);
                     response = httpRequest.call(coinsInfoUrl, CMC_ApiToken, CMC_ApiHeaderFormat);
                     jsonObject = new JSONObject(Objects.requireNonNull(response.body()).string());
-                    getCoinsIcon(jsonObject, symbols);
+                    ArrayList<String> icons = getCoinsIcon(jsonObject, symbols);
+                    Shared_Objects.executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            cacheCoinLogo(icons, ctx);
+                        }
+                    });
 
                     // step5.   Send Message to handler for update view.
                     Message msg = Message.obtain();
@@ -137,7 +153,7 @@ public class MainModelView {
     }
 
     // Parse coins data json and Save in dataHolder ArrayList.
-    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData,Boolean cache, Context ctx ) {
+    private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData, Boolean cache, Context ctx) {
         if (clearCoinsData) dataHolder.clearCoinsData();
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
@@ -184,7 +200,7 @@ public class MainModelView {
         return symbols;
     }
 
-    private void getCoinsIcon(JSONObject coinsInfo, String[] symbols) {
+    private ArrayList<String> getCoinsIcon(JSONObject coinsInfo, String[] symbols) {
         ArrayList<String> url_coinsIcon = new ArrayList<>();
 
         try {
@@ -205,13 +221,14 @@ public class MainModelView {
             dataHolder.updateCoinLogo(symbols[i], url);
             i++;
         }
+        return url_coinsIcon;
 //        response = httpRequest.call(coinsInfoUrl, ApiToken, ApiHeaderFormat);
 
     }
 
     public void cacheCoinInfo(JSONObject data, Context ctx) {
         try {
-            File file = new File(ctx.getFilesDir(),"cached_coins_Info.json");
+            File file = new File(ctx.getFilesDir(), "cached_coins_Info.json");
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data.toString());
@@ -221,7 +238,28 @@ public class MainModelView {
         }
     }
 
-    public void readCachedCoinInfo_andSave(Handler handler, Context ctx){
+    public void cacheCoinLogo(ArrayList<String> data, Context ctx) {
+        try {
+            File file = new File(ctx.getFilesDir(), "cached_coins_Logo.json");
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            String d = "";
+            int i = 0;
+            for (String s : data) {
+                d += s;
+                if (i < data.size() - 1)
+                    d += ",";
+                i++;
+            }
+
+            bufferedWriter.write(d);
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readCachedCoinInfo_andSave(Handler handler, Context ctx) {
         try {
             File file = new File(ctx.getFilesDir(), "cached_coins_Info.json");
             FileReader fileReader = new FileReader(file);
@@ -235,8 +273,33 @@ public class MainModelView {
             bufferedReader.close();
             String responce = stringBuilder.toString();
 
-            JSONObject jsonObject  = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(responce);
             SaveNewCoinsData(jsonObject, false, false, ctx);
+
+
+            File fileLogo = new File(ctx.getFilesDir(), "cached_coins_Logo.json");
+            FileReader logoReader = new FileReader(fileLogo);
+            BufferedReader logoBuffer = new BufferedReader(logoReader);
+            StringBuilder sbLogo = new StringBuilder();
+            String l = logoBuffer.readLine();
+            while (l != null) {
+                sbLogo.append(l).append("\n");
+                l = logoBuffer.readLine();
+            }
+            logoBuffer.close();
+            String resp = sbLogo.toString();
+            List<String> logosList = Arrays.asList(resp.split(","));
+            ArrayList<String> logos = new ArrayList<String>();
+            logos.addAll(logosList);
+
+
+            int i = 0;
+            for (String url : logos) // TODO
+            {
+                dataHolder.updateCoinLogo(dataHolder.getCoinsData().get(i).getSymbol(), url);
+                i++;
+            }
+
 
             // Send Message to handler for update view.
             Message msg = Message.obtain();
