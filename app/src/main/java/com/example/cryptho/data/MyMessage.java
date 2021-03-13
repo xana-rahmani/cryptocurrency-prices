@@ -5,6 +5,7 @@ public class MyMessage {
     final private String[] NotifText = {
             "No internet connection  :(",  // arg = 0
             "Cant get new coins data   :(",  // arg = 1
+            "No candle data available   :(", //arg = 2
     };
 
 
