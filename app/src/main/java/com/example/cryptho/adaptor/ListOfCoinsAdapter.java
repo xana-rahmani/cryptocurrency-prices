@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cryptho.MainActivity;
 import com.example.cryptho.R;
 import com.example.cryptho.data.CoinData;
@@ -126,6 +127,7 @@ public class ListOfCoinsAdapter extends RecyclerView.Adapter<ListOfCoinsAdapter.
                 .with(holder.itemView)
                 .load(coinsData.get(position).getLogo())
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.ic_launcher_background)
                 .override(50,50)
                 .into(holder.coinAvatar);
