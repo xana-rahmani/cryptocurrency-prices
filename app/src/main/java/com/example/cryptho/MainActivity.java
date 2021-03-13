@@ -61,16 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (isConnected()) {
             deactiveShowMoreButton();
-            mmv.showMoreCoin(mainHandler,getApplicationContext());
+            mmv.showMoreCoin(mainHandler, getApplicationContext());
         } else {
             // Disconnected
+            mmv.readCachedCoinInfo_andSave(mainHandler, getApplicationContext());
             Message msg = Message.obtain();
             msg.what = myMessage.SHOW_NOTIFICATION;
             msg.arg1 = 0;
             mainHandler.sendMessage(msg);
         }
-
-        // TODO : go and download from cash or show error message if first time
     }
 
     private boolean isConnected() {

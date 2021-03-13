@@ -15,7 +15,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -39,9 +44,7 @@ public class MainModelView {
 
 
     static public com.example.cryptho.MainModelView getInstance() {
-        if (me == null) {
-            me = new com.example.cryptho.MainModelView();
-        }
+        if (me == null) me = new com.example.cryptho.MainModelView();
         return me;
     }
 
@@ -136,16 +139,11 @@ public class MainModelView {
 
     // Parse coins data json and Save in dataHolder ArrayList.
     private void SaveNewCoinsData(JSONObject jsonCoinsData, Boolean clearCoinsData,Boolean cache, Context mainCtx ) {
-        if (clearCoinsData) {
-            dataHolder.clearCoinsData();
-        }
-
+        if (clearCoinsData) dataHolder.clearCoinsData();
         try {
             JSONArray dataArray = jsonCoinsData.getJSONArray("data");
 
             for (int i = 0; i < dataArray.length(); i++) {
-
-
                 JSONObject coinData = dataArray.getJSONObject(i);
                 String coin_name = coinData.getString("name");
                 String coin_symbol = coinData.getString("symbol");
@@ -154,24 +152,19 @@ public class MainModelView {
                 int change_1h = (int) coinUsdValue.getDouble("percent_change_1h");
                 int change_24h = (int) coinUsdValue.getDouble("percent_change_24h");
                 int change_7d = (int) coinUsdValue.getDouble("percent_change_7d");
-
                 dataHolder.addOrUpdateCoinData(coin_name, coin_symbol, coin_price,
                         change_1h, change_24h, change_7d);
             }
-            if (cache)
-            {
+            if (cache) {
                 Shared_Objects.executorService.execute(new Runnable() {
                     @Override
                     public void run() {
-                        cacheCoinInfo(dataArray,mainCtx);
+                        cacheCoinInfo(jsonCoinsData,mainCtx);
                     }
                 });
-
             }
-
             //After save new coins >> update NumberOfCoins
             NumberOfCoins = dataHolder.CoinsDataSize();
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -218,17 +211,42 @@ public class MainModelView {
 
     }
 
-    public void cacheCoinInfo(JSONArray data, Context ctx) {
-
-        Log.v("SaveData", "Saving Data");
-        final String fileName = "cachedCoinsInfo";
-        try (FileOutputStream fos = ctx.openFileOutput(fileName, Context.MODE_PRIVATE)) {
-
-            String storeData = String.valueOf(data.toString());
-            fos.write(storeData.getBytes());
-            Log.v("SaveData", "Data Saved");
-
+    public void cacheCoinInfo(JSONObject data, Context ctx) {
+        try {
+            File file = new File(ctx.getFilesDir(),"cached_coins_Info.json");
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(data.toString());
+            bufferedWriter.close();
+            Log.v("cached", "DONE" + ctx.getFilesDir());
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readCachedCoinInfo_andSave(Handler handler, Context ctx){
+        try {
+            File file = new File(ctx.getFilesDir(), "cached_coins_Info.json");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuilder stringBuilder = new StringBuilder();
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append("\n");
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();
+            String responce = stringBuilder.toString();
+
+            JSONObject jsonObject  = new JSONObject(responce);
+            SaveNewCoinsData(jsonObject, false, false, ctx);
+
+            // Send Message to handler for update view.
+            Message msg = Message.obtain();
+            msg.what = myMessage.UPDATE_COINS_DATA_LIST;
+            handler.sendMessage(msg);
+
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }
